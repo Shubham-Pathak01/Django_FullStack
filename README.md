@@ -10,7 +10,6 @@ It allows users to register, log in, post tweets with images, edit or delete the
 - 🔐 **User Authentication** — Register, Login, and Logout  
 - 💬 **Create, Edit, and Delete Tweets**  
 - 📸 **Upload Photos** with your Tweets  
-- 🔍 **Search Tweets by Username**  
 - 🏠 **Responsive Feed** — Tweets displayed neatly in cards, side by side  
 - 🖤 **Modern Dark Theme** with Bootstrap 5  
 - ⚡ **User-specific actions** — Edit/Delete only your own tweets  
