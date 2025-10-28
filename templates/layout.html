@@ -1,67 +1,89 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-    crossorigin="anonymous"
-  >
-  <title>
-    {% block title %}
-      chai aur tweet
-    {% endblock %}
-  </title>
-</head>
+<html data-bs-theme="dark">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title> {% block title%} Chai Aur Tweet {%endblock%}</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    </head>
+    <body>
+       <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">TweetHub</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-<body>
-  <!-- ✅ Navbar -->
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'tweet_list' %}">TweetBar</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-              aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'tweet_list' %}">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'tweet_create' %}">Create Tweet</a>
-          </li>
-        </ul>
+        <!-- Home Button -->
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'tweet_list' %}active text-secondary{% endif %}" 
+             href="{% url 'tweet_list' %}">
+             Home
+          </a>
+        </li>
 
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
+        <!-- Create Tweet Button -->
+        <li class="nav-item">
+          <a class="nav-link {% if request.resolver_match.url_name == 'tweet_create' %}active text-secondary{% endif %}" 
+             href="{% url 'tweet_create' %}">
+             Create a Tweet
+          </a>
+        </li>
+      </ul>
+
+        {% if user.is_authenticated %}
+        <span class="navbar-text text-white me-3">
+          👋 Hello, <strong>{{ user.username }}</strong>
+        </span>
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
         </form>
-      </div>
-    </div>
-  </nav>
+        {% else %}
+        <a class="btn btn-outline-primary btn-sm" href="{% url 'login' %}">Login</a>
+        <a class="btn btn-outline-success btn-sm ms-2" href="{% url 'register' %}">Sign Up</a>
+        {% endif %}
 
-  <!-- ✅ Flash Messages -->
-  {% if messages %}
-  <div class="container mt-3">
-    {% for message in messages %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-      {{ message }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      <form class="d-flex" role="search" method="GET" action="{% url 'tweet_list' %}">
+        <input class="form-control me-2" 
+         type="search" 
+         placeholder="Search by username" 
+         name="q" 
+         value="{{ request.GET.q }}" 
+         aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+
+       
+
     </div>
+  </div>
+</nav>
+    <div class="container mt-4">
+        {% block content %}
+        Welcome to TweetHub
+        {% endblock %}
+</div>
+
+    {% if messages %}
+    <div class="container mt-3">
+    {% for message in messages %}
+      <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
     {% endfor %}
   </div>
-  {% endif %}
+{% endif %}
 
-  <!-- ✅ Main Content -->
-  <div class="container mt-4">
-    {% block content %}
-      Welcome to TweetHub
-    {% endblock %}
-  </div>
-
- 
+        <script src="" async defer></script>
+    </body>
+</html>

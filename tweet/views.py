@@ -3,6 +3,7 @@ from .models import Tweet
 from .forms import TweetForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, logout
 from .forms import RegisterForm
 
 
@@ -14,6 +15,7 @@ def index(request):
 def tweet_list(request):
     tweets = Tweet.objects.all().order_by('-create_on')
     return render(request, 'tweet_list.html', {'tweets': tweets})
+
 
 # Create a new tweet
 @login_required
@@ -62,8 +64,18 @@ def register(request):
             user.set_password(form.cleaned_data['password1'])
             username = form.cleaned_data.get('username')
             user.save()
+            login(request, user)
             messages.success(request, f'Account created successfully for {username}!')
             return redirect('login')  # redirect to login page after signup
     else:
         form = RegisterForm()
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'registration/register.html', {'form': form})
+
+def logout_view(request):
+    if request.method in ['POST', 'GET']:
+        username = request.user.username if request.user.is_authenticated else "User"
+        logout(request)
+        messages.success(request, f"Successfully logged out, {username}!")
+        return redirect('tweet_list')
+    else:
+        return redirect('tweet_list')
