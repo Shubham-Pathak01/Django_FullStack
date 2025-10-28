@@ -59,7 +59,8 @@ It allows users to register, log in, post tweets with images, edit or delete the
 | **Template Engine** | Django Templates |
 
 ---
-<img width="1920" height="1080" alt="Screenshot (24)" src="https://github.com/user-attachments/assets/799e0a1f-a25f-4b38-97fb-d0efc89ede9d" />
+<img width="1920" height="840" alt="Screenshot (24)" src="https://github.com/user-attachments/assets/228f0e3b-af49-468a-9fcc-5b8d9385359c" />
+
 
 
 
